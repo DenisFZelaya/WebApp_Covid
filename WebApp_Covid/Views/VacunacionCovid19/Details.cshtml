@@ -1,0 +1,105 @@
+﻿@model WebApp_Covid.Models.VacunacionCovid19
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>VacunacionCovid19</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FkPacienteId)
+        </dt>
+        <dd class = "col-sm-10" id="fkpaciente">
+                @Html.DisplayFor(model => model.FkPacienteId)
+                    </dd>
+        <dt class = "col-sm-2" >
+            @Html.DisplayNameFor(model => model.FkVacunaId)
+        </dt>
+        <dd class = "col-sm-10" id="fkvacuna">
+            @Html.DisplayFor(model => model.FkVacunaId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FkDosisId)
+        </dt>
+        <dd class = "col-sm-10" id="fkdosis">
+            @Html.DisplayFor(model => model.FkDosisId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaCreacion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FechaCreacion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaUltimaModificacion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FechaUltimaModificacion)
+        </dd>
+    </dl>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Expediente</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Sexo</th>
+            <th scope="col">Edad</th>
+            <th scope="col">Vacuna</th>
+            <th scope="col">Dosis</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row" id="pacienteId">
+            </th>
+            <td id="exp"></td>
+            <td id="nombres"></td>
+            <td id="apellidos"></td>
+            <td id="sexo"></td>
+            <td id="edad"></td>
+            <td id="vacuna"></td>
+            <td id="dosis"></td>
+        </tr>
+    </tbody>
+</table>
+<script>
+    var idPaciente = parseInt(document.getElementById("fkpaciente").innerHTML);
+    var idDosis = parseInt(document.getElementById("fkdosis").innerHTML);
+    var idVacuna = parseInt(document.getElementById("fkvacuna").innerHTML);
+
+    fetch('http://localhost:55013/api/Pacientes/' + idPaciente)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("pacienteId").innerHTML = data.pacienteId;
+            document.getElementById("exp").innerHTML = data.expediente;
+            document.getElementById("nombres").innerHTML = data.nombres;
+            document.getElementById("apellidos").innerHTML = data.apellidos;
+            document.getElementById("sexo").innerHTML = data.sexo;
+            document.getElementById("edad").innerHTML = data.edad;
+            console.log(data);
+        });
+
+    fetch('http://localhost:55013/api/Dosis/' + idDosis)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("dosis").innerHTML = data.descripcion;
+        } );
+
+    fetch('http://localhost:55013/api/Vacunas/' + idVacuna)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("vacuna").innerHTML = data.descripcion;
+            console.log(data);
+        });
+</script>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.VacunacionId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

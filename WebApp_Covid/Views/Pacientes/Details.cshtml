@@ -1,0 +1,142 @@
+﻿@model WebApp_Covid.Models.Pacientes
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h3>Detalles del Paciente</h3>
+
+<div>
+    
+    <hr />
+    <div class="card">
+        <div class="card-header">
+            <h5>Paciente</h5>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+            </h5>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PacienteId)
+                </dt>
+                <dd class="col-sm-10" id="pacienteId">
+                    @Html.DisplayFor(model => model.PacienteId)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Expediente)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Expediente)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Nombres)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Nombres)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Apellidos)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Apellidos)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Sexo)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Sexo)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.FechaNacimiento)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.FechaNacimiento)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Edad)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Edad)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TipoEdad)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TipoEdad)
+                </dd>
+            </dl>
+            <a asp-action="Edit" asp-route-id="@Model.PacienteId" class="btn btn-primary">Editar</a>
+        </div>
+    </div>
+
+   
+</div>
+
+<h3>Registro de Vacunacion</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Vacuna</th>
+            <th scope="col">Dosis</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Fecha Actualizacion</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td id="Id1"></td>
+            <td id="Vacuna1"></td>
+            <td id="Dosis1"></td>
+            <td id="Fecha1"></td>
+            <td id="FechaAct1"></td>
+        </tr>
+        <tr>
+            <td id="Id2"></td>
+            <td id="Vacuna2"></td>
+            <td id="Dosis2"></td>
+            <td id="Fecha2"></td>
+            <td id="FechaAct2"></td>
+        </tr>
+    </tbody>
+</table>
+<script>
+    var idPaciente = parseInt(document.getElementById("pacienteId").innerHTML);
+
+    fetch('http://localhost:55013/api/Pacientes/Dosis/' + idPaciente)
+        .then(response => response.json())
+        .then(data => {
+            fetch('http://localhost:55013/api/Vacunas/' + data[0].fkVacunaId)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("Vacuna1").innerHTML = data.descripcion;
+                    document.getElementById("Vacuna2").innerHTML = data.descripcion;
+                });
+
+            fetch('http://localhost:55013/api/Dosis/' + data[0].fkDosisId)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("Dosis1").innerHTML = data.descripcion;
+                });
+            fetch('http://localhost:55013/api/Dosis/' + data[1].fkDosisId)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("Dosis2").innerHTML = data.descripcion;
+                });
+            document.getElementById("Id1").innerHTML = data[0].vacunacionId;
+            document.getElementById("Id2").innerHTML = data[1].vacunacionId;       
+            document.getElementById("Fecha1").innerHTML = data[0].fechaCreacion;
+            document.getElementById("Fecha2").innerHTML = data[1].fechaCreacion;
+            document.getElementById("FechaAct1").innerHTML = data[0].fechaUltimaModificacion;
+            document.getElementById("FechaAct2").innerHTML = data[1].fechaUltimaModificacion;
+
+            console.log(data);
+        });
+
+</script>
+<div>
+    
+    <a asp-action="Index">Back to List</a>
+</div>

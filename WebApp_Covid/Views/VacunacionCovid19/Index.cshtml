@@ -1,0 +1,59 @@
+﻿@model IEnumerable<WebApp_Covid.Models.VacunacionCovid19>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FkPacienteId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FkVacunaId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FkDosisId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaCreacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaUltimaModificacion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FkPacienteId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FkVacunaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FkDosisId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaCreacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaUltimaModificacion)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.VacunacionId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.VacunacionId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.VacunacionId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

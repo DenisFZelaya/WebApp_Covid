@@ -1,0 +1,90 @@
+﻿@model WebApp_Covid.Models.VacunacionCovid19
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>VacunacionCovid19</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FkPacienteId" class="control-label"></label>
+                <input asp-for="FkPacienteId" class="form-control" id="inputPacienteId" onchange="getNamePaciente()" />
+                <span asp-validation-for="FkPacienteId" class="text-danger"></span>
+                <h4 id="nombrePaciente"></h4>
+
+            </div>
+            <div class="form-group">
+                <label asp-for="FkVacunaId" class="control-label"></label>
+                <input asp-for="FkVacunaId" class="form-control" id="inputVacunaId" onchange=" getVacuna()" />
+                <span asp-validation-for="FkVacunaId" class="text-danger"></span>
+                <h4 id="nombreVacuna"></h4>
+            </div>
+            <div class="form-group">
+                <label asp-for="FkDosisId" class="control-label"></label>
+                <input asp-for="FkDosisId" class="form-control" id="inputDosisId" onchange="getDosis()"/>
+                <span asp-validation-for="FkDosisId" class="text-danger"></span>
+                <h4 id="nombreDosis"></h4>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaCreacion" class="control-label"></label>
+                <input asp-for="FechaCreacion" class="form-control" />
+                <span asp-validation-for="FechaCreacion" class="text-danger"></span>
+                
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaUltimaModificacion" class="control-label"></label>
+                <input asp-for="FechaUltimaModificacion" class="form-control" />
+                <span asp-validation-for="FechaUltimaModificacion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function getNamePaciente() {
+        var idPaciente = parseInt(document.getElementById("inputPacienteId").value);
+        fetch('http://localhost:55013/api/Pacientes/' + idPaciente)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("nombrePaciente").innerHTML = data.nombres + " " + data.apellidos;
+                console.log(data);
+            });
+    }
+
+    function getVacuna() {
+        var idPaciente = parseInt(document.getElementById("inputVacunaId").value);
+        fetch('http://localhost:55013/api/Vacunas/' + idPaciente)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("nombreVacuna").innerHTML = data.descripcion;
+                console.log(data);
+            });
+    }
+
+    function getDosis() {
+        var idPaciente = parseInt(document.getElementById("inputDosisId").value);
+        fetch('http://localhost:55013/api/Dosis/' + idPaciente)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("nombreDosis").innerHTML = data.descripcion;
+                console.log(data);
+            });
+    }
+
+</script>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
